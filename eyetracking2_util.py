@@ -323,3 +323,7 @@ def filter_experiment(experiment, min_prop_data_per_trial=0.5, min_prop_trials_p
   experiment.trials_to_keep = [idx for (idx, trial) in enumerate(trials) \
                                   if 1 - trial.proportion_missing >= min_prop_data_per_trial and idx > 0]
   experiment.keep_experiment = (len(experiment.trials_to_keep) >= len(trials) * min_prop_trials_per_subject)
+
+# Given a list X, returns a list of changepoints
+def get_changepoints(X):
+  return X[:-1] != X[1:]
