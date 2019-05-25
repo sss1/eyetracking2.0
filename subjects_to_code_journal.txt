@@ -1,12 +1,3 @@
-TOTAL LIST FOR BRM19:
-
-84 total sessions
-20% (18 sessions) were done by two of the three coders.
-Coder 1 has to do 15+2+6=23 new sessions, and will have done 40 total.
-Coder 2's data was removed (for reasons unrelated to the data).
-Coder 3 has to do 16+2+6=24 new sessions and will have done 33 total.
-Coder 4 has to do 17+6+6=29 new sessions and will have done 29 total.
-
 Both Coders:
 R34  noshrinky
 R34  shrinky
@@ -14,20 +5,20 @@ E22  shrinky
 R37  noshrinky
 M206 noshrinky
 M198 shrinky
-(J) A298 shrinky
-(J) A297 shrinky
-(J) AF11 noshrinky
-(J) E3   noshrinky
-(J) E51  shrinky
-(J) M146 shrinky
-(J) A294 noshrinky
-(J) A276 shrinky
-(J) AF2  noshrinky
-(J) A380 noshrinky
-(J) R35  shrinky
-(J) E29  noshrinky
+A298 shrinky
+A297 shrinky
+AF11 noshrinky
+E3   noshrinky
+E51  shrinky
+M146 shrinky
+A294 noshrinky
+A276 shrinky
+AF2  noshrinky
+A380 noshrinky
+R35  shrinky
+E29  noshrinky
 
-Coder 1 (Jaeah Kim):
+Coder 1:
 A298 noshrinky
 A326 noshrinky
 A338 noshrinky
@@ -74,7 +65,7 @@ E3   shrinky
 E52  shrinky
 R37  shrinky
 
-Coder 3 (Priscilla Medor):
+Coder 3:
 A326 shrinky
 A345 noshrinky
 AF8  shrinky
