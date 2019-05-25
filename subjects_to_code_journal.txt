@@ -7,29 +7,25 @@ Coder 2's data was removed (for reasons unrelated to the data).
 Coder 3 has to do 16+2+6=24 new sessions and will have done 33 total.
 Coder 4 has to do 17+6+6=29 new sessions and will have done 29 total.
 
-Coders 1 & 3:
+Both Coders:
 R34  noshrinky
 R34  shrinky
 E22  shrinky
 R37  noshrinky
 M206 noshrinky
 M198 shrinky
-
-Coders 4 & 1:
-A298 shrinky
-A297 shrinky
-AF11 noshrinky
-E3   noshrinky
-E51  shrinky
-M146 shrinky
-
-Coders 3 & 4:
-A294 noshrinky
-A276 shrinky
-AF2  noshrinky
-A380 noshrinky
-R35  shrinky
-E29  noshrinky
+(J) A298 shrinky
+(J) A297 shrinky
+(J) AF11 noshrinky
+(J) E3   noshrinky
+(J) E51  shrinky
+(J) M146 shrinky
+(J) A294 noshrinky
+(J) A276 shrinky
+(J) AF2  noshrinky
+(J) A380 noshrinky
+(J) R35  shrinky
+(J) E29  noshrinky
 
 Coder 1 (Jaeah Kim):
 A298 noshrinky
@@ -39,13 +35,13 @@ A338 shrinky
 A340 noshrinky
 A345 shrinky
 E52  noshrinky
-R17  shrinky 
 A294 shrinky
 A295 shrinky
 A339 shrinky
 L177 noshrinky
 A380 shrinky
 B37  shrinky
+B37  noshrinky
 E29  shrinky
 AF11 shrinky
 M146 noshrinky
@@ -60,31 +56,6 @@ M201 shrinky
 M140 noshrinky
 AF7  shrinky
 M191 shrinky
-
-Coder 3 (Priscilla Medor):
-A326 shrinky
-A345 noshrinky
-AF8  shrinky
-B37  noshrinky
-B38  noshrinky
-M201 noshrinky
-C59  shrinky
-R12  noshrinky
-B33  noshrinky
-M193 noshrinky
-B38  shrinky
-AF8  noshrinky
-M140 shrinky
-B33  shrinky
-A297 noshrinky
-A295 noshrinky
-B56  shrinky
-M193 shrinky
-M206 shrinky
-R17  noshrinky
-AF7  noshrinky
-
-Coder 4 (Elaine Xu):
 A340 shrinky
 A272 shrinky
 A272 noshrinky
@@ -102,3 +73,26 @@ R35  noshrinky
 E3   shrinky
 E52  shrinky
 R37  shrinky
+
+Coder 3 (Priscilla Medor):
+A326 shrinky
+A345 noshrinky
+AF8  shrinky
+B38  noshrinky
+M201 noshrinky
+C59  shrinky
+R12  noshrinky
+B33  noshrinky
+M193 noshrinky
+B38  shrinky
+AF8  noshrinky
+M140 shrinky
+B33  shrinky
+A297 noshrinky
+A295 noshrinky
+B56  shrinky
+M193 shrinky
+M206 shrinky
+R17  shrinky 
+R17  noshrinky
+AF7  noshrinky
