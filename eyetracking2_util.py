@@ -1,5 +1,7 @@
 import numpy as np
 import copy
+import math
+from scipy.stats import multivariate_normal
 
 import load_subjects as ls
 import util
@@ -327,3 +329,50 @@ def filter_experiment(experiment, min_prop_data_per_trial=0.5, min_prop_trials_p
 # Given a list X, returns a list of changepoints
 def get_changepoints(X):
   return X[:-1] != X[1:]
+
+# Given two binary sequences xs and ys of equal length, computes a confusion between xs and ys,
+# but allows for some slack in detecting positives (i.e., positives with distance max_dist can be counted correct)
+def generalized_2x2_confusion_matrix(xs, ys, max_dist):
+  # y_positives version of ys with 1s propogated max_dist on either side of original 1s
+  # y_positives is compared with xs to compute true positives (TPs). Rest of confusion matrix can be calculated just from TPs, xs, and ys.
+  y_positives = np.zeros(np.shape(ys), dtype=bool)
+  for offset in range(-max_dist,max_dist+1):
+    last_idx1 = None if offset >= 0 else offset # have to use None to index through end of array
+    last_idx2 = None if offset <= 0 else -offset
+    y_positives[max(0,offset):last_idx1] = np.logical_or(y_positives[max(0, offset):last_idx1],
+                                                                  ys[max(0,-offset):last_idx2])
+  TPs = np.sum(np.logical_and(xs, y_positives))
+  FPs = np.sum(xs) - TPs
+  FNs = max(0, np.sum(ys) - TPs)
+  TNs = len(xs) - (TPs + FPs + FNs)
+
+  return np.array([[TNs, FNs],[FPs, TPs]])
+
+# A simple test:
+# Compare to reference confusion matrix implementation for max_dist=0,
+# And check that classification performance improves with larger max_dist
+# >>> from sklearn.metrics import confusion_matrix
+# >>> xs = np.random.randint(low=0,high=2,size=10000)
+# >>> ys = np.random.randint(low=0,high=2,size=10000)
+# >>> confusion_matrix(xs, ys, labels=[False, True])
+# array([[2479, 2531],
+#        [2455, 2535]])
+# >>> util.generalized_2x2_confusion_matrix(xs, ys, max_dist=0)
+# array([[2479, 2531],
+#        [2455, 2535]])
+# >>> util.generalized_2x2_confusion_matrix(xs, ys, max_dist=1)
+# array([[4337,  673],
+#        [ 597, 4393]])
+# >>> util.generalized_2x2_confusion_matrix(xs, ys, max_dist=1000)
+# array([[4934,   76],
+#        [   0, 4990]])
+
+# Given a confusion matrix CM from a binary classification task; CM should be formatted as
+# [[True Negatives, False Negatives],
+#  [False Positives, True Positives]]
+def classification_performance(CM):
+  precision = float(CM[1,1])/(CM[1,1] + CM[1,0])
+  recall = float(CM[1,1])/(CM[1,1] + CM[0,1])
+  F1 = 2.0 * precision * recall / (precision + recall)
+  MCC = (float(CM[0,0])*CM[1,1] - float(CM[0,1])*CM[1,0])/math.sqrt((CM[1,1] + CM[1,0])*(CM[1,1]+CM[0,1])*(CM[0,0]+CM[1,0])*(CM[0,0]+CM[0,1]))
+  return precision, recall, F1, MCC
