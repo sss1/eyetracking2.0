@@ -4,6 +4,7 @@
 
 # Raw data files (a compressed version is already included in the repo)
 data/
+backup_data_5_25_2019/
 *.zip
 
 # Temporary cache files for speeding up data processing (especially computing the HMM)
