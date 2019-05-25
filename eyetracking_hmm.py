@@ -11,7 +11,7 @@ def get_trackit_MLE(eye_track, target, distractors, sigma2 = 100 ** 2):
   mu = np.concatenate((target[None, :, :], distractors)).swapaxes(1, 2)
   return get_MLE(X, mu, sigma2 = sigma2)
 
-def get_MLE(X, mu, sigma2 = 100 ** 2): 
+def get_MLE(X, mu, sigma2):
 
   # For now, just hardcode reasonable guesses of model parameters
   n_states = mu.shape[0]
@@ -32,7 +32,7 @@ def get_MLE(X, mu, sigma2 = 100 ** 2):
 # 
 # The output of __viterbi() is a shape-(N,) integer array of predicted states at each timepoint.
 # The value -1 is used to indicate frames during which eye-tracking data was missing.
-def __viterbi(X, mu, pi, Pi, sigma2 = 100 ** 2):
+def __viterbi(X, mu, pi, Pi, sigma2):
 
   N = X.shape[0]
   K = mu.shape[0]
@@ -54,7 +54,7 @@ def __viterbi(X, mu, pi, Pi, sigma2 = 100 ** 2):
       for j in range(K): # previous state
         # if previous observation is NaN and this one is valid (not NaN), then use initial probabilities pi
         if np.isnan(X[n - 1, 0]) and not np.isnan(X[n, 0]):
-          next_likelihood = pi[k] + log_emission_prob(X[n, :], mu[k, n, :], sigma2 = sigma2)
+          next_likelihood = log(pi[k]) + log_emission_prob(X[n, :], mu[k, n, :], sigma2 = sigma2)
         else:
           next_likelihood = T[n - 1, j] + log(Pi[j, k]) + log_emission_prob(X[n, :], mu[k, n, :], sigma2 = sigma2)
         if next_likelihood > max_likelihood:
@@ -79,7 +79,28 @@ def __viterbi(X, mu, pi, Pi, sigma2 = 100 ** 2):
       assert MLE[n] > -1
   return MLE
 
-def log_emission_prob(X, mu, sigma2 = 100 ** 2):
+def log_emission_prob(X, mu):
   # Add singleton dimension using None because log_multivariate_normal_density is written for
   # multiple samples, but we only need it for 1
   return multivariate_normal.logpdf(X, mean = mu, cov = sigma2)
+
+def compute_likelihood(eyetrack, object_positions, predicted_states, sigma2):
+  n_states = object_positions.shape[0]
+  trans_prob = (1.0/600.0)/(n_states - 1.0) # Probability of transitioning between any pair of states
+  # This guess corresponds to an average of 1 switch per 600 frames, or roughly once every 10 seconds
+  pi = np.ones(n_states) / n_states # Uniform starting probabilities
+  Pi = (1.0 - n_states*trans_prob) * np.identity(n_states) + trans_prob * np.ones((n_states,n_states))
+  return calc_trial_log_likelihood(eyetrack, object_positions, predicted_states, sigma2, Pi, pi)
+
+def calc_trial_log_likelihood(eyetrack_positions, object_positions, predicted_states, sigma2, Pi, pi):
+  log_likelihood = 0
+  prev_state = -1
+  for (eyetrack, objects, state) in zip(eyetrack_positions, np.swapaxes(object_positions, 0, 1), predicted_states):
+    if state > -1: # If current frame is non-missing
+      log_likelihood += multivariate_normal.logpdf(eyetrack, mean = objects[state,:], cov = sigma2)
+      if prev_state > -1: # If previous state is non-missing, use transition probability
+        log_likelihood += log(Pi[prev_state, state])
+      else: # Else use initial probability
+        log_likelihood += log(pi[state])
+      prev_state = state
+  return log_likelihood
