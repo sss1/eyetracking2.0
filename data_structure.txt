@@ -1,0 +1,95 @@
+DATA ORGANIZATION
+data/
+  eyetracking/
+    noshrinky/
+      <ParticipantID>_noshrinky_<timestamp>.csv
+    shrinky/
+      <ParticipantID>_shrinky_<timestamp>.csv
+  human_coded/
+    coder1/
+      <ParticipantID>_<condition>_trial_<trialNumber>_coding.csv
+    coder2/
+      <ParticipantID>_<condition>_trial_<trialNumber>_coding.csv
+    coder3/
+      <ParticipantID>_<condition>_trial_<trialNumber>_coding.csv
+  trackit/
+    noshrinky/
+      <ParticipantID>noshrinky.csv
+    shrinky/
+      <ParticipantID>shrinky.csv
+
+where:
+<ParticipantID> is a unique 2-4 character identifier for each subject.
+<timestamp> is the starting time of the eye-tracking recording, in the format M(M)_D(D)_YYYY_H(H)_m(m).
+<condition> is either 'noshrinky' or 'shrinky'
+<trialNumber> is an integer between 1 and 10 (inclusive)
+
+DATA FILE FORMATS:
+Eye-tracking files (1 CSV file per session, 100 total):
+
+Example:
+
+Timestamp,Mean X, Mean Y, Left X, Left Y, Right X, Right Y
+1538489724331.0,1091.9775824734456,582.1654492350276,1089.5550804511154,572.6438770468552,1094.400084495776,591.6870214232
+1538489724367.0,1089.7234786743797,578.1894303738297,1089.860282978529,572.5952667617744,1089.5866743702306,583.7835939858852
+1538489724381.0,0.0,0.0,0.0,0.0,0.0,0.0
+1538489724398.0,1090.7332560705445,580.6678567017877,1090.8961801304135,577.3877356135952,1090.5703320106754,583.9479777899804
+
+Columns:
+  "Timestamp" is a timestamp (in ms) and is absolute with respect to the clock on the computer on which the eye-tracker was running. Timestamps are taken at 60Hz, but can vary by +/- 16 ms, due to limited precision of Python's time.time() function on Windows.
+  "Mean X" is the arithmetic mean of Left X and Right X.
+  "Mean Y" is the arithmetic mean of Left Y and Right Y.
+  "Left X" is the X-coordinate of the left eye. A value of 0.0 indicates missing data.
+  "Left Y" is the Y-coordinate of the left eye. A value of 0.0 indicates missing data.
+  "Right X" is the X-coordinate of the right eye. A value of 0.0 indicates missing data.
+  "Right Y" is the Y-coordinate of the right eye. A value of 0.0 indicates missing data.
+
+Notes:
+1) Typically, data from both eyes are missing together. Occasionally, data from one eye is missing, but data from the other eye is present. However, for each eye, the X and Y values are always missing or present together (i.e., "Left X" is 0.0 if and only if "Left Y" is 0.0).
+2) Care should be taken when using the "Mean X" and "Mean Y" values, particularly for frames on which data from one, but not both, of the eyes is missing. On these frames, the Mean values are essentially meaningless, as they are the average of 0.0 and the non-missing eye's data. Thus, when reading in these files, we use the Mean values only if neither or both eyes' data are missing, and use the non-missing eye's data otherwise.
+
+TrackIt files (1 CSV file per session, 100 total):
+
+
+
+Human coding files (1 per trial, 840 total):
+2-column CSV file
+
+Example:
+
+Time,Default
+0.00,Object 3
+1.00,Object 3
+2.00,Off Task
+3.00,Off Task
+4.00,Off Task
+5.00,Off Task
+6.00,Object 1
+7.00,Object 1
+8.00,Object 1
+9.00,Off Screen
+10.00,Off Screen
+...
+
+Columns:
+  "Time" is a frame number (at 10Hz).
+  "Default" is a classification of the frame by the human coder. Valid values are:
+    "Object <X>": X in an integer between 0 and 6 (inclusive), corresponding to one of the 7 TrackIt objects. "Object 0" is always the Target.
+    "Off Screen": Indicates that eye-tracking data is missing for this frame.
+    "Off Task": Indicates that eye-tracking data is available, but it is not clear which object the participant is tracking.
+
+Notes:
+1) When comparing model predictions (HMM or Naive, which are 60Hz) with human coding, we down-sample model predictions by a factor of 6.
+
+
+
+
+
+
+
+
+
+
+
+
+

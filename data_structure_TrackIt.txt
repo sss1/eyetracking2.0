@@ -1,0 +1,50 @@
+Example:
+
+"Track-It Version","Name","Gender","Birthdate","Age","Test Date","Test Location","Number of Distractors","Object Speed","Trial Type","Trial Count","Trial Length","Uses Random Target","Uses Rest Period","FPS","Seed","Grid X Size","Grid Y Size","Uses Background Images","Background Image Directory","Uses Memory Check","Uses Fullscreen","Motion Constraint Type","Motion Interpolation Type","Session Number","Is Calibration Experiment"
+"2.0.5","A272","Male","01/04/2013","5","10/02/2018","Cognitive Development Lab","6","500.0","All Different","11","10000.0","true","false","30.0","1538489704479","6","6","true","C:\Users\Lab User\Documents\files_and_folders_from_desktop\New folder","m2X2","true","GRID","LINEAR","2noshrinky","false"
+"BEGIN New Trial"
+"id","length","startTime","target","targetX","targetY","targetGridX","targetGridY","userX","userY","userGridX","userGridY","gridClickCorrect","gridClickRT","lineupStimulus","lineupClickCorrect","lineupClickRT","errorType","isPracticeTrial"
+"1","14861","1538489749525","Circle","1043.5","285.5","3","1","1058.0","345.0","3","1","true","1940","Circle","true","1991","Conjunction","true"
+,,"target","target","","","","","","","","","","","",""
+"Frame Timestamp (Relative)","Frame Timestamp (Absolute)","Circle_x","Circle_y","Half-Circle_x","Half-Circle_y","Right-Arrow_x","Right-Arrow_y","Crescent_x","Crescent_y","Pentagon_x","Pentagon_y","Triangle_x","Triangle_y","Cross_x","Cross_y",
+"0","1538489749525","698.5","103.5","1047.5","996.5","525.0","630.0","698.5","277.5","1047.5","102.5","522.0","276.0","697.5","802.5"
+"34","1538489749559","709.5","104.5","1056.5","1014.5","534.0","639.0","693.5","283.5","1038.5","102.5","522.0","284.0","706.5","804.5"
+"68","1538489749593","725.5","104.5","1072.5","1013.5","546.0","651.0","681.5","295.5","1021.5","102.5","522.0","301.0","722.5","808.5"
+
+...
+
+"14796","1538489764321","1025.5","312.5","522.5","596.5","700.0","933.0","1075.5","500.5","939.5","277.5","747.0","164.0","1011.5","522.5"
+"14830","1538489764355","1039.5","292.5","522.5","621.5","700.0","908.0","1088.5","479.5","964.5","277.5","769.0","153.0","1019.5","546.5"
+"14864","1538489764389","1043.5","285.5","522.5","629.5","700.0","900.0","1093.5","472.5","972.5","277.5","776.0","149.0","1022.5","554.5"
+"END New Trial"
+"BEGIN New Trial"
+"id","length","startTime","target","targetX","targetY","targetGridX","targetGridY","userX","userY","userGridX","userGridY","gridClickCorrect","gridClickRT","lineupStimulus","lineupClickCorrect","lineupClickRT","errorType","isPracticeTrial"
+"2","11901","1538489791442","Triangle","522.0","276.0","0","1","546.0","257.0","0","1","true","1541","Triangle","true","3647","None","false"
+,,"target","target","","","","","","","","","","","",""
+"Frame Timestamp (Relative)","Frame Timestamp (Absolute)","Triangle_x","Triangle_y","Cross_x","Cross_y","Right-Arrow_x","Right-Arrow_y","Pentagon_x","Pentagon_y","Diamond_x","Diamond_y","Box_x","Box_y","Crescent_x","Crescent_y",
+"0","1538489791442","697.0","450.0","1047.5","802.5","703.0","983.0","872.5","102.5","1397.5","802.5","697.0","277.0","1049.5","102.5"
+"34","1538489791476","685.0","438.0","1054.5","787.5","703.0","966.0","884.5","114.5","1397.5","785.5","713.0","281.0","1051.5","118.5"
+"68","1538489791510","674.0","427.0","1061.5","773.5","703.0","950.0","895.5","125.5","1397.5","769.5","729.0","285.0","1057.5","134.5"
+
+...
+
+"10976","1538490136224","1201.5","956.5","801.0","607.0","1213.0","457.0","791.5","815.5","826.5","903.5","1094.5","341.5","1093.0","204.0"
+"11010","1538490136258","1213.5","968.5","810.0","622.0","1216.0","449.0","798.5","830.5","833.5","918.5","1079.5","348.5","1079.0","214.0"
+"11044","1538490136292","1222.5","977.5","817.0","632.0","1205.0","443.0","804.5","841.5","839.5","929.5","1068.5","354.5","1069.0","222.0"
+"END New Trial"
+"End of entire file."
+
+The first two rows of the TrackIt data file comprise the Session Header, which contains information about the TrackIt settings used 
+
+"Track-It Version"
+"Name"
+"Gender"
+"Birthdate"
+"Age"
+"Test Date"
+"Test Location"
+"Number of Distractors"
+"Object Speed"
+"Trial Type","Trial Count","Trial Length","Uses Random Target","Uses Rest Period","FPS","Seed","Grid X Size","Grid Y Size","Uses Background Images","Background Image Directory","Uses Memory Check","Uses Fullscreen","Motion Constraint Type","Motion Interpolation Type","Session Number","Is Calibration Experiment"
+"2.0.5","A272","Male","01/04/2013","5","10/02/2018","Cognitive Development Lab","6","500.0","All Different","11","10000.0","true","false","30.0","1538489704479","6","6","true","C:\Users\Lab User\Documents\files_and_folders_from_desktop\New folder","m2X2","true","GRID","LINEAR","2noshrinky","false"
+The beginning and end of data from each trial are indicated by rows with "BEGIN New Trial" and "END New Trial", respectively.
