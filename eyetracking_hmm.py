@@ -79,7 +79,7 @@ def __viterbi(X, mu, pi, Pi, sigma2):
       assert MLE[n] > -1
   return MLE
 
-def log_emission_prob(X, mu):
+def log_emission_prob(X, mu, sigma2):
   # Add singleton dimension using None because log_multivariate_normal_density is written for
   # multiple samples, but we only need it for 1
   return multivariate_normal.logpdf(X, mean = mu, cov = sigma2)

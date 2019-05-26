@@ -226,13 +226,11 @@ def distance_from_target(trackit_trial, eyetrack_trial):
   target_positions = trackit_trial.object_positions[trackit_trial.target_index, :, :]
   return np.sqrt(np.square(target_positions - eyetrack_trial.data[:,1:]).sum(axis=1))
 
-def performance_according_to_HMM(trackit_trial, eyetrack_trial, treat_missing_data_as_incorrect = False):
+def performance_according_to_HMM(trackit_trial, eyetrack_trial, sigma2, treat_missing_data_as_incorrect = False):
   if not hasattr(eyetrack_trial, 'HMM_MLE'): # If HMM MLE is not already cached, compute it
-    rint('Computing new trial HMM...')
+    print('Computing new trial HMM...')
     eyetrack_positions = eyetrack_trial.data[:, 1:]
-    sigma2_child = 250 ** 2 # Value taken from supervised results in CogSci 18 paper
-    # sigma2_child = 870 ** 2 # Value taken from supervised results in CogSci 18 paper
-    eyetrack_trial.HMM_MLE = eyetracking_hmm.get_MLE(eyetrack_positions, trackit_trial.object_positions, sigma2 = sigma2_child)
+    eyetrack_trial.HMM_MLE = eyetracking_hmm.get_MLE(eyetrack_positions, trackit_trial.object_positions, sigma2 = sigma2)
   if treat_missing_data_as_incorrect:
     return eyetrack_trial.HMM_MLE == trackit_trial.target_index
   else:
