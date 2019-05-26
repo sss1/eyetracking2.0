@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Output files
 *.out
 
@@ -13,8 +12,6 @@ cache/
 # Video files are too large to host on Git
 videos/
 
-=======
->>>>>>> db14f1f4f9dc9efd18096c68bb4b82b0dd3ae3d8
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -25,10 +22,6 @@ __pycache__/
 
 # Distribution / packaging
 .Python
-<<<<<<< HEAD
-env/
-=======
->>>>>>> db14f1f4f9dc9efd18096c68bb4b82b0dd3ae3d8
 build/
 develop-eggs/
 dist/
@@ -40,17 +33,11 @@ lib64/
 parts/
 sdist/
 var/
-<<<<<<< HEAD
-*.egg-info/
-.installed.cfg
-*.egg
-=======
 wheels/
 *.egg-info/
 .installed.cfg
 *.egg
 MANIFEST
->>>>>>> db14f1f4f9dc9efd18096c68bb4b82b0dd3ae3d8
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
@@ -70,14 +57,9 @@ htmlcov/
 .cache
 nosetests.xml
 coverage.xml
-<<<<<<< HEAD
-*,cover
-.hypothesis/
-=======
 *.cover
 .hypothesis/
 .pytest_cache/
->>>>>>> db14f1f4f9dc9efd18096c68bb4b82b0dd3ae3d8
 
 # Translations
 *.mo
@@ -86,10 +68,7 @@ coverage.xml
 # Django stuff:
 *.log
 local_settings.py
-<<<<<<< HEAD
-=======
 db.sqlite3
->>>>>>> db14f1f4f9dc9efd18096c68bb4b82b0dd3ae3d8
 
 # Flask stuff:
 instance/
@@ -104,11 +83,7 @@ docs/_build/
 # PyBuilder
 target/
 
-<<<<<<< HEAD
-# IPython Notebook
-=======
 # Jupyter Notebook
->>>>>>> db14f1f4f9dc9efd18096c68bb4b82b0dd3ae3d8
 .ipynb_checkpoints
 
 # pyenv
@@ -117,7 +92,6 @@ target/
 # celery beat schedule file
 celerybeat-schedule
 
-<<<<<<< HEAD
 # dotenv
 .env
 
@@ -130,7 +104,7 @@ ENV/
 
 # Rope project settings
 .ropeproject
-=======
+
 # SageMath parsed files
 *.sage.py
 
@@ -155,4 +129,3 @@ venv.bak/
 
 # mypy
 .mypy_cache/
->>>>>>> db14f1f4f9dc9efd18096c68bb4b82b0dd3ae3d8
