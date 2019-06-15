@@ -1,14 +1,23 @@
 import numpy as np
 import pickle
+import sys
 
 import load_subjects as ls
-import eyetracking2_util as util
+# import eyetracking2_util as utili
+from eyetracking_hmm import performance_according_to_HMM
+from util import impute_missing_data, break_eyetracking_into_trials, interpolate_trackit_to_eyetracking, filter_experiment
 
-sigma = 300
+if len(sys.argv) > 1:
+  sigma = float(sys.argv[1])
+else:
+  sigma = 300.0
 sigma2 = sigma ** 2
 
+print('HMM will run with sigma = ' + str(sigma) + '.')
+
 # Output pickle file to which to save results
-save_file = 'cache/new/sigma' + str(sigma) + '.pickle'
+save_file = str(sigma) + '.pickle'
+print('Results will be output to ' + save_file)
 
 # Load all experiment data
 subjects = ls.load_dataset('shrinky', 'eyetrack')
@@ -16,15 +25,15 @@ subjects = ls.load_dataset('shrinky', 'trackit', subjects)
 subjects = ls.load_dataset('noshrinky', 'eyetrack', subjects)
 subjects = ls.load_dataset('noshrinky', 'trackit', subjects)
 
+print('Merging and preprocessing datasets...')
 # Combine eyetracking with trackit data and perform all preprocessing
 for subject in subjects.values():
   for (experiment_ID, experiment) in subject.experiments.items():
-    print(subject.ID)
     ls.add_age(experiment)
-    util.impute_missing_data(experiment)
-    util.break_eyetracking_into_trials(experiment)
-    util.interpolate_trackit_to_eyetracking(experiment)
-    util.filter_experiment(experiment)
+    impute_missing_data(experiment)
+    break_eyetracking_into_trials(experiment)
+    interpolate_trackit_to_eyetracking(experiment)
+    filter_experiment(experiment)
 
 # Retain only subjects with at least half non-missing data in at least half their trials, in both conditions
 def subject_is_good(subject):
@@ -39,11 +48,12 @@ print(str(len(bad_subjects)) + ' bad subjects: ' + str(bad_subjects))
 for subject in good_subjects.values():
   for trial in zip(subject.experiments['shrinky'].datatypes['trackit'].trials,
                    subject.experiments['shrinky'].datatypes['eyetrack'].trials):
-    util.performance_according_to_HMM(*trial, sigma2=sigma2)
+    performance_according_to_HMM(*trial, sigma2=sigma2)
   for trial in zip(subject.experiments['noshrinky'].datatypes['trackit'].trials,
                    subject.experiments['noshrinky'].datatypes['eyetrack'].trials):
+    performance_according_to_HMM(*trial, sigma2=sigma2)
 
 # Save results with Pickle
 with open(save_file , 'w') as f:
-  pickle.dump(subjects, f)
+  pickle.dump(subjects, f, protocol=pickle.HIGHEST_PROTOCOL)
 print('Saved subjects to file \''  + save_file + '\'')

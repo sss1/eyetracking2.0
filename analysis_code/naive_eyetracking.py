@@ -1,5 +1,8 @@
 import numpy as np
 
+# Computes and returns the predicted state sequence under the naive model,
+# which always predicts the object closest to the eye-gaze.
+# Frames with missing eye-tracking data are encoded as -1.
 def get_trackit_MLE(eye_track, target, distractors, sigma2 = None):
   N = eye_track.shape[1] # length of trial, in frames
   num_distractors = distractors.shape[0]

@@ -2,8 +2,6 @@ import csv, json
 import numpy as np
 from datetime import datetime
 
-from dataset_list_shrinky_plusplus_shrinky import dataset_list
-
 class Subject:
   """The basic unit of TrackIt data is the subject. Pretty much all statistics should be computed at the subject level first, and then aggregated across subjects, since only subjects can really be assumed to be IID."""
   def __init__(self, ID):
@@ -173,7 +171,9 @@ def load_dataset(experiment_ID, datatype_ID, subjects = {}):
   subjects -- (dict mapping subject IDs to Subject instances) dict to which to add new data
   
   """
-  for (subject_ID, path) in dataset_list[experiment_ID + '_' + datatype_ID]:
+  for subject_idx in range(50):
+    subject_ID = str(subject_idx)
+    path = '../' + datatype_ID + '/' + experiment_ID + '/' + subject_ID + '.csv'
     print('Loading ' + experiment_ID + '_' + datatype_ID + ' for subject ' + subject_ID)
     if not subject_ID in subjects:
       subjects[subject_ID] = Subject(subject_ID)
@@ -198,8 +198,6 @@ def load_data(subject_ID, datatype_ID, path):
   raise ValueError('Unknown datatype ID: ' + datatype_ID)
 
 def add_age(experiment):
-  birthdate = datetime.strptime(experiment.datatypes['trackit'].metadata['Birthdate'], '%m/%d/%Y')
-  testdate = datetime.strptime(experiment.datatypes['trackit'].metadata['Test Date'], '%m/%d/%Y')
-  experiment.age = (testdate - birthdate).days/365.25
+  experiment.age = float(experiment.datatypes['trackit'].metadata['Age'])
   if experiment.age > 2000: # Some of the birthdates were entered without the century (e.g., 05/25/0014 rather than 05/25/2014).
     experiment.age -= 2000

@@ -2,27 +2,24 @@ DATA ORGANIZATION
 data/
   eyetracking/
     noshrinky/
-      <ParticipantID>_noshrinky_<timestamp>.csv
+      <ParticipantID>.csv
     shrinky/
-      <ParticipantID>_shrinky_<timestamp>.csv
+      <ParticipantID>.csv
   human_coded/
     coder1/
-      <ParticipantID>_<condition>_trial_<trialNumber>_coding.csv
-    coder2/
       <ParticipantID>_<condition>_trial_<trialNumber>_coding.csv
     coder3/
       <ParticipantID>_<condition>_trial_<trialNumber>_coding.csv
   trackit/
     noshrinky/
-      <ParticipantID>noshrinky.csv
+      <ParticipantID>.csv
     shrinky/
-      <ParticipantID>shrinky.csv
+      <ParticipantID>.csv
 
 where:
-<ParticipantID> is a unique 2-4 character identifier for each subject.
-<timestamp> is the starting time of the eye-tracking recording, in the format M(M)_D(D)_YYYY_H(H)_m(m).
-<condition> is either 'noshrinky' or 'shrinky'
-<trialNumber> is an integer between 1 and 10 (inclusive)
+<ParticipantID> is a unique integer identifier, between 0 and 49 (inclusive) for each subject;
+<condition> is either 'noshrinky' or 'shrinky';
+<trialNumber> is an integer between 1 and 10 (inclusive); practice trials (Trial 0) were not hand-coded.
 
 DATA FILE FORMATS:
 Eye-tracking files (1 CSV file per session, 100 total):
@@ -48,7 +45,10 @@ Notes:
 1) Typically, data from both eyes are missing together. Occasionally, data from one eye is missing, but data from the other eye is present. However, for each eye, the X and Y values are always missing or present together (i.e., "Left X" is 0.0 if and only if "Left Y" is 0.0).
 2) Care should be taken when using the "Mean X" and "Mean Y" values, particularly for frames on which data from one, but not both, of the eyes is missing. On these frames, the Mean values are essentially meaningless, as they are the average of 0.0 and the non-missing eye's data. Thus, when reading in these files, we use the Mean values only if neither or both eyes' data are missing, and use the non-missing eye's data otherwise.
 
+
+
 TrackIt files (1 CSV file per session, 100 total):
+See data_structure_TrackIt.txt for full description.
 
 
 
@@ -80,16 +80,3 @@ Columns:
 
 Notes:
 1) When comparing model predictions (HMM or Naive, which are 60Hz) with human coding, we down-sample model predictions by a factor of 6.
-
-
-
-
-
-
-
-
-
-
-
-
-

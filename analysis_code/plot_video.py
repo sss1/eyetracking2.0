@@ -1,87 +1,40 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib import animation
-import time
-import eyetracking_hmm
 import naive_eyetracking
-import eyetracking2_util as util
+from eyetracking_hmm import performance_according_to_HMM
 import pickle
 np.set_printoptions(threshold = np.nan)
 
-experiments_to_show = [('A298', 'shrinky'),
-                       ('B37' , 'shrinky'),
-                       ('M191', 'shrinky'),
-                       ('M191', 'noshrinky'),
-                       ('M193', 'shrinky'),
-                       ('M193', 'noshrinky'),
-                       ('A297', 'shrinky'),
-                       ('A297', 'noshrinky'),
-                       ('A294', 'shrinky'),
-                       ('A294', 'noshrinky'),
-                       ('A295', 'shrinky'),
-                       ('A295', 'noshrinky'),
-                       ('A339', 'shrinky'),
-                       ('A339', 'noshrinky'),
-                       ('M201', 'shrinky'),
-                       ('M201', 'noshrinky'),
-                       ('A272', 'shrinky'),
-                       ('A272', 'noshrinky'),
-                       ('E51' , 'shrinky'),
-                       ('E51' , 'noshrinky'),
-                       ('A276', 'shrinky'),
-                       ('A276', 'noshrinky'),
-                       ('E52' , 'shrinky'),
-                       ('R17' , 'noshrinky'),
-                       ('B38' , 'shrinky'),
-                       ('L177', 'shrinky'),
-                       ('L177', 'noshrinky'),
-                       ('B56' , 'shrinky'),
-                       ('B56' , 'noshrinky'),
-                       ('B33' , 'shrinky'),
-                       ('B33' , 'noshrinky'),
-                       ('AF8' , 'noshrinky'),
-                       ('R35' , 'shrinky'),
-                       ('R35' , 'noshrinky'),
-                       ('M206', 'shrinky'),
-                       ('M206', 'noshrinky'),
-                       ('AF2' , 'shrinky'),
-                       ('AF2' , 'noshrinky'),
-                       ('E22' , 'noshrinky'),
-                       ('A380', 'shrinky'),
-                       ('A380', 'noshrinky'),
-                       ('E29' , 'shrinky'),
-                       ('E29' , 'noshrinky'),
-                       ('M198', 'shrinky'),
-                       ('M198', 'noshrinky'),
-                       ('M146', 'shrinky'),
-                       ('M146', 'noshrinky'),
-                       ('M143', 'shrinky'),
-                       ('M143', 'noshrinky'),
-                       ('M140', 'shrinky'),
-                       ('M140', 'noshrinky'),
-                       ('A340', 'shrinky'),
-                       ('R12' , 'shrinky'),
-                       ('R12' , 'noshrinky'),
-                       ('AF11', 'shrinky'),
-                       ('AF11', 'noshrinky'),
-                       ('C59' , 'shrinky'),
-                       ('C59' , 'noshrinky'),
-                       ('E3'  , 'shrinky'),
-                       ('E3'  , 'noshrinky'),
-                       ('M197', 'shrinky'),
-                       ('M197', 'noshrinky'),
-                       ('A327', 'shrinky'),
-                       ('A327', 'noshrinky')]
+# This script generates all of the videos that were used by human coders to
+# hand-code the eye-tracking data.
+# By changing prediction_to_plot below, the same script can be used to plot
+# the predictions of the HMM and/or Naive model.
 
-cache_file = 'cache/sigma250.cache'
+cache_file = '250.pickle'
 
-is_supervised = False
-target_color = None # Usually 'b'; None means random
+is_supervised = False # Set to True for supervised TrackIt (with changing target object)
+target_color = None # Usually 'b'; None means random, for human coding
 target_name = 'Distractor 0' # Usually 'Target'
 distractor_color = None # Usually 'r'
 
-save_video = True
-root = '/home/painkiller/Desktop/academic/projects/eyetracking2.0/videos/human_coding/unassigned/'
+save_video = False # If True, saves the output video. If False, only displays the video.
+root = './' # root directory 
+
+# boundaries of track-it grid
+x_min = 400
+x_max = 2000
+y_min = 0
+y_max = 1200
+
+space = 50 # number of extra pixels to display on either side of the plot
+
+prediction_to_plot = 'None' # Should be one of 'HMM', 'Naive', or 'None'
+
+lag = 10 # plot a time window of length lag, so we can see the trajectory more clearly
+
+experiments_to_show = [(str(subject_idx, 'shrinky')) for subject_idx in range(50)] \
+                    + [(str(subject_idx, 'noshrinky')) for subject_idx in range(50)]
 
 with open(cache_file , 'r') as f:
   subjects = pickle.load(f)
@@ -92,25 +45,7 @@ def plot_video(subject_ID, experiment):
   trials_to_show = range(int(trackit_data.metadata['Trial Count']))[1:] # Omit first (practice) trial
   eyetrack_data = subjects[subject_ID].experiments[experiment].datatypes['eyetrack']
   
-  # boundaries of track-it grid
-  x_min = 400
-  x_max = 2000
-  y_min = 0
-  y_max = 1200
-  
-  space = 50 # number of extra pixels to display on either side of the plot
-  
-  prediction_to_plot = 'None' # Should be one of 'HMM', 'Naive', or 'None'
-  
-  # First set up the figure, the axis, and the plot element we want to animate
-  lag = 10 # plot a time window of length lag, so we can see the trajectory more clearly
   print('Number of trials: ' + str(len(trials_to_show)))
-  # for trial_idx in trials_to_show:
-  #   eyetrack = eyetrack_all_trials[trial_idx]
-  #   target = target_all_trials[trial_idx]
-  #   distractors = distractors_all_trials[trial_idx]
-  #   MLE = naive_eyetracking.get_trackit_MLE(eyetrack, target, distractors, sigma2 = 400 ** 2)
-  #   print np.mean(MLE == labels_all_trials[trial_idx])
   
   # Set up formatting for the saved movie file
   if save_video:
@@ -128,7 +63,7 @@ def plot_video(subject_ID, experiment):
     target = trackit_trial.object_positions[trackit_trial.target_index, :, :]
     distractors = np.delete(trackit_trial.object_positions, trackit_trial.target_index, axis=0) # object X frame X coordinate
     if prediction_to_plot == 'HMM':
-      util.performance_according_to_HMM(trackit_trial, eyetrack_trial)
+      performance_according_to_HMM(trackit_trial, eyetrack_trial)
       MLE = eyetrack_trial.HMM_MLE
     elif prediction_to_plot == 'Naive':
       MLE = naive_eyetracking.get_trackit_MLE(np.swapaxes(eyetrack,0,1), np.swapaxes(target,0,1), np.swapaxes(distractors,1,2))
@@ -180,8 +115,6 @@ def plot_video(subject_ID, experiment):
       plt.draw()
       plt.xlim([x_min, x_max])
       plt.ylim([y_min, y_max])
-      # timestep = 0.0333 / 2
-      # time.sleep(timestep)
       return trackit_line, eyetrack_line,
   
   
