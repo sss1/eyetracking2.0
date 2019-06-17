@@ -8,6 +8,7 @@ backup_data_5_25_2019/
 
 # Temporary cache files for speeding up data processing (especially computing the HMM)
 cache/
+*.pickle
 
 # Video files are too large to host on Git
 videos/
